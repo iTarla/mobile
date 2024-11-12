@@ -12,6 +12,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SearchIcon from '../../assets/icons/Search.svg';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {useNavigation} from '@react-navigation/native';
 
 const fieldsData = [
   {
@@ -41,6 +42,12 @@ const fieldsData = [
 ];
 
 export const ChooseFarm = () => {
+  const navigation = useNavigation();
+
+  const Continue = () => {
+    navigation.navigate('ChooseCrop');
+  };
+
   const Farm = ({item}) => {
     const [imageShown, setImageShown] = useState(false);
 
@@ -58,7 +65,7 @@ export const ChooseFarm = () => {
           </View>
 
           <BouncyCheckbox
-            size={25}
+            size={16}
             fillColor="#0A973A"
             unFillColor="#FFFFFF"
             iconStyle={{borderColor: 'red'}}
@@ -109,7 +116,7 @@ export const ChooseFarm = () => {
         />
       </View>
 
-      <Pressable style={styles.continueButton}>
+      <Pressable onPress={Continue} style={styles.continueButton}>
         <Text style={styles.continueText}>Continue</Text>
       </Pressable>
     </SafeAreaView>
@@ -119,7 +126,7 @@ export const ChooseFarm = () => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    gap: 16,
+    gap: 20,
     paddingHorizontal: 20,
   },
   titleContainer: {
@@ -172,6 +179,7 @@ const styles = StyleSheet.create({
   },
   fieldsContainer: {
     gap: 8,
+    flexGrow: 1,
   },
   field: {
     width: '100%',
