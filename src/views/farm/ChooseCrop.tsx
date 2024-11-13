@@ -15,6 +15,7 @@ import SearchIcon from '../../assets/icons/Search.svg';
 import AddCircleIcon from '../../assets/icons/AddCircle.svg';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import ArrowDownIcon from '../../assets/icons/ArrowDown.svg';
+import {useNavigation} from '@react-navigation/native';
 
 const cropsData = [
   {
@@ -34,13 +35,13 @@ const cropsData = [
     icon: '🍏',
     name: 'Apples',
     sorts: [
-      'Sort Qizil Akhmed',
-      'Sort Yashil',
-      'Sort Quba',
-      'Sort Shampan Reneti',
-      'Sort Cir Haci',
-      'Sort Palmen',
-      'Sort Simirenko',
+      {name: 'Sort Qizil Akhmed', isSelected: false},
+      {name: 'Sort Yashil', isSelected: true},
+      {name: 'Sort Quba', isSelected: false},
+      {name: 'Sort Shampan Reneti', isSelected: false},
+      {name: 'Sort Cir Haci', isSelected: true},
+      {name: 'Sort Palmen', isSelected: false},
+      {name: 'Sort Simirenko', isSelected: true},
     ],
   },
   {
@@ -64,6 +65,12 @@ const cropsData = [
 ];
 
 export const ChooseCrop = () => {
+  const navigation = useNavigation();
+
+  const Continue = () => {
+    navigation.navigate('BottomNavigation');
+  };
+
   const Crop = ({item}) => {
     const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -117,12 +124,13 @@ export const ChooseCrop = () => {
             renderItem={item => (
               <View style={styles.sort}>
                 <View style={styles.sortNameContainer}>
-                  <Text style={styles.sortName}>{item.item}</Text>
+                  <Text style={styles.sortName}>{item.item.name}</Text>
                 </View>
                 <BouncyCheckbox
                   size={16}
                   fillColor="#0A973A"
                   unFillColor="#FFFFFF"
+                  isChecked={item.item.isSelected}
                   iconStyle={{borderColor: 'red'}}
                   innerIconStyle={{borderWidth: 2}}
                 />
@@ -174,7 +182,7 @@ export const ChooseCrop = () => {
         </View>
       </View>
 
-      <Pressable style={styles.continueButton}>
+      <Pressable onPress={Continue} style={styles.continueButton}>
         <Text style={styles.continueText}>Continue</Text>
       </Pressable>
     </SafeAreaView>
@@ -186,6 +194,7 @@ const searchWidth = Dimensions.get('window').width - 116;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+    backgroundColor: 'white',
     gap: 20,
     paddingHorizontal: 20,
   },

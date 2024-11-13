@@ -17,25 +17,25 @@ import {useNavigation} from '@react-navigation/native';
 const fieldsData = [
   {
     id: 1,
-    name: 'Quba Alma tarlası',
+    name: 'Quba alma tarlası',
     imageUrl:
       'https://www.lindsay.com/uploads/images/sections/392694-img-Map_bright.jpg',
   },
   {
     id: 2,
-    name: 'Tarla 2',
+    name: 'Aran taxıl tarlası',
     imageUrl:
       'https://www.lindsay.com/uploads/images/sections/392694-img-Map_bright.jpg',
   },
   {
     id: 3,
-    name: 'BHOS',
+    name: 'Cəlilabad',
     imageUrl:
       'https://www.lindsay.com/uploads/images/sections/392694-img-Map_bright.jpg',
   },
   {
     id: 4,
-    name: 'Lankaran',
+    name: 'Lənkəran',
     imageUrl:
       'https://www.lindsay.com/uploads/images/sections/392694-img-Map_bright.jpg',
   },
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     gap: 20,
+    backgroundColor: 'white',
     paddingHorizontal: 20,
   },
   titleContainer: {

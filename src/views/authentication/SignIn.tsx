@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    backgroundColor: 'white',
     gap: 50,
   },
   iconContainer: {
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingVertical: 18,
-    boxShadow: '1 1 1 1 rgba(0, 0, 0, 0.2)',
+    boxShadow: '0 0 1 1 rgba(0, 0, 0, 0.2)',
     borderRadius: 14,
   },
   focusedInputContainer: {
