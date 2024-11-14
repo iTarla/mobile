@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   Animated,
+  Dimensions,
   FlatList,
   Pressable,
   StyleSheet,
@@ -21,6 +22,7 @@ import DropIcon from '../../assets/icons/Drop.svg';
 import SunnyIcon from '../../assets/icons/Sunny.svg';
 import CloudRainIcon from '../../assets/icons/CloudRain.svg';
 import Svg, {Defs, Ellipse, LinearGradient, Rect, Stop} from 'react-native-svg';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const crops = [
   {
@@ -118,6 +120,7 @@ export const Home = () => {
 
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <ScrollView style={styles.scroll}>
       <View style={styles.headerContainer}>
         <View style={styles.logoContainer}>
           <ITarlaLogo />
@@ -312,7 +315,7 @@ export const Home = () => {
         </View>
       </View>
 
-      <Animated.FlatList
+      <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         style={styles.categories}
@@ -321,12 +324,19 @@ export const Home = () => {
         renderItem={item => <Category item={item.item} index={item.index} />}
         keyExtractor={item => item.id.toString()}
       />
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
+const statisticsWidth = (Dimensions.get('window').width - 88) / 3;
+
 const styles = StyleSheet.create({
   contentContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scroll: {
     flex: 1,
     gap: 12,
     paddingHorizontal: 16,
@@ -336,6 +346,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 4,
+    marginBottom: 12,
     alignItems: 'center',
   },
   logoContainer: {
@@ -353,7 +364,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
-    elevation: 3,
+    elevation: 12,
   },
   temperatureContainer: {
     flexDirection: 'row',
@@ -421,12 +432,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 4,
+    marginBottom: 16,
   },
   statiscticsMeasures: {
     flexDirection: 'row',
     paddingHorizontal: 12,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    paddingBottom: 16,
+    gap: 16,
   },
   healthTitle: {
     fontFamily: 'Figtree',
@@ -486,7 +500,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   statiscticsMeasure: {
-    width: 100,
+    width: statisticsWidth,
     height: 90,
     borderRadius: 10,
     paddingHorizontal: 8,
@@ -512,8 +526,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   alertContainer: {
-    paddingHorizontal: 8,
-    marginBottom: 8,
+    paddingHorizontal: 12,
+    marginBottom: 24,
   },
   alert: {
     borderRadius: 10,
