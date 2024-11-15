@@ -135,6 +135,7 @@ export const ChooseCrop = () => {
                   isChecked={item.item.isSelected}
                   iconStyle={{borderColor: 'red'}}
                   innerIconStyle={{borderWidth: 2}}
+
                 />
               </View>
             )}

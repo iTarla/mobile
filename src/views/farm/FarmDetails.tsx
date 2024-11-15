@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AddIcon from '../../assets/icons/AddCircle.svg';
@@ -8,17 +8,49 @@ import ITarlaLogo from '../../assets/icons/iTarla.svg';
 import VectorIcon from '../../assets/icons/Vector.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 import TreeIcon from '../../assets/icons/Tree.svg';
+import BadIcon from '../../assets/icons/Bad.svg';
+import GoodIcon from '../../assets/icons/Good.svg';
+import NormalIcon from '../../assets/icons/Normal.svg';
 import {LineChart} from 'react-native-gifted-charts';
+import {initializeApp} from 'firebase/app';
+import {getDatabase, onValue, ref} from 'firebase/database';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyDrxsUEsD7b9P9B615Rl8DKifijrmimTEc',
+  authDomain: 'YOUR_AUTH_DOMAIN',
+  databaseURL:
+    'https://itarla-d5bde-default-rtdb.europe-west1.firebasedatabase.app/',
+  projectId: 'itarla-d5bde',
+  storageBucket: 'YOUR_STORAGE_BUCKET',
+  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+  appId: '1:177713668204:android:7f74156cf0ca221ef8f849',
+};
 
 export const FarmDetails = () => {
+  const [data, setData] = useState({
+    moisture: 0,
+    ph: 0,
+    temperature: 0,
+    potassium: 0,
+    nitrogen: 0,
+    phosphorus: 0,
+  });
 
-  fetch(
-    'https://itarla-d5bde-default-rtdb.europe-west1.firebasedatabase.app/test.json?auth=AIzaSyDrxsUEsD7b9P9B615Rl8DKifijrmimTEc',
-  )
-    .then(response => response.json())
-    .then(data => {
-      
+  useEffect(() => {
+    const app = initializeApp(firebaseConfig);
+
+    const db = getDatabase(app);
+
+    const dbRef = ref(db, 'test');
+
+    const unsubscribe = onValue(dbRef, snapshot => {
+      const fetchedData = snapshot.val();
+
+      setData(fetchedData);
     });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <SafeAreaView style={styles.contentContainer}>
@@ -86,7 +118,7 @@ export const FarmDetails = () => {
               {value: 54, label: 'Wed'},
               {value: 45, label: 'Thurs'},
               {value: 48, label: 'Fri'},
-              {value: 75, label: 'Sat'},
+              {value: 65, label: 'Sat'},
               {value: 46, label: 'Sun'},
               {value: null, label: ''},
             ]}
@@ -126,6 +158,107 @@ export const FarmDetails = () => {
           />
         </View>
 
+        <View style={styles.dataContainer}>
+          <View style={styles.data}>
+            <Text style={styles.dataTitle}>Plant health overview</Text>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+                💦Soil Moisture: {data.moisture}%
+              </Text>
+
+              {Math.abs(data.moisture - 80) / 80 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.temperature - 80) / 80 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+                🌡️Temperature: {data.temperature}°C
+              </Text>
+
+              {Math.abs(data.temperature - 20) / 20 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.temperature - 20) / 20 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>🧪Soil pH: {data.ph}</Text>
+
+              {Math.abs(data.ph - 7) / 7 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.ph - 7) / 7 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+              ⚡️Conductivity: {data.conductivity} mS/cm
+              </Text>
+
+              {Math.abs(data.conductivity - 800) / 800 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.conductivity - 800) / 800 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+              🧫Nitrogen level: {data.nitrogen} ppm
+              </Text>
+              {Math.abs(data.nitrogen - 40) / 40 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.nitrogen - 40) / 40 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+              🧫Phosphorus level: {data.phosphorus} ppm
+              </Text>
+
+              {Math.abs(data.phosphorus - 20) / 20 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.phosphorus - 20) / 20 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.dataText}>
+              🧫Kalium level: {data.potassium} ppm
+              </Text>
+
+              {Math.abs(data.potassium - 200) / 200 > 0.33 ? (
+                <BadIcon />
+              ) : Math.abs(data.potassium - 200) / 200 > 0.2 ? (
+                <NormalIcon />
+              ) : (
+                <GoodIcon />
+              )}
+            </View>
+          </View>
+        </View>
+
         <View style={styles.graph}>
           <Text style={styles.chartTitle}>Soil pH level</Text>
 
@@ -142,15 +275,15 @@ export const FarmDetails = () => {
               {value: null, label: ''},
             ]}
             data2={[
-              {value: 8, label: ''},
-              {value: 8, label: 'Mon'},
-              {value: 8, label: 'Tues'},
-              {value: 8, label: 'Wed'},
-              {value: 8, label: 'Thurs'},
-              {value: 8, label: 'Fri'},
-              {value: 8, label: 'Sat'},
-              {value: 8, label: 'Sun'},
-              {value: 8, label: ''},
+              {value: 7, label: ''},
+              {value: 7, label: 'Mon'},
+              {value: 7, label: 'Tues'},
+              {value: 7, label: 'Wed'},
+              {value: 7, label: 'Thurs'},
+              {value: 7, label: 'Fri'},
+              {value: 7, label: 'Sat'},
+              {value: 7, label: 'Sun'},
+              {value: 7, label: ''},
             ]}
             width={Dimensions.get('window').width - 80}
             height={100}
@@ -190,30 +323,30 @@ export const FarmDetails = () => {
           <LineChart
             data={[
               {value: null, label: ''},
-              {value: 28, label: 'Mon'},
-              {value: 23, label: 'Tues'},
-              {value: 29, label: 'Wed'},
-              {value: 26, label: 'Thurs'},
-              {value: 27, label: 'Fri'},
-              {value: 25, label: 'Sat'},
-              {value: 32, label: 'Sun'},
+              {value: 9, label: 'Mon'},
+              {value: 8, label: 'Tues'},
+              {value: 9.5, label: 'Wed'},
+              {value: 8.6, label: 'Thurs'},
+              {value: 9, label: 'Fri'},
+              {value: 7, label: 'Sat'},
+              {value: 9, label: 'Sun'},
               {value: null, label: ''},
             ]}
             data2={[
-              {value: 27.5, label: ''},
-              {value: 27.5, label: 'Mon'},
-              {value: 27.5, label: 'Tues'},
-              {value: 27.5, label: 'Wed'},
-              {value: 27.5, label: 'Thurs'},
-              {value: 27.5, label: 'Fri'},
-              {value: 27.5, label: 'Sat'},
-              {value: 27.5, label: 'Sun'},
-              {value: 27.5, label: ''},
+              {value: 9.3, label: ''},
+              {value: 9.3, label: 'Mon'},
+              {value: 9.3, label: 'Tues'},
+              {value: 9.3, label: 'Wed'},
+              {value: 9.3, label: 'Thurs'},
+              {value: 9.3, label: 'Fri'},
+              {value: 9.3, label: 'Sat'},
+              {value: 9.3, label: 'Sun'},
+              {value: 9.3, label: ''},
             ]}
             width={Dimensions.get('window').width - 80}
             height={100}
             yAxisThickness={0}
-            yAxisOffset={15}
+            yAxisOffset={4}
             color={'#F17A13'}
             thickness={3}
             touchEnabled={true}
@@ -233,8 +366,8 @@ export const FarmDetails = () => {
             dragDecelerationFrictionCoef={0.99}
             dataPointsColor={'#F17A13'}
             dataPointsRadius1={4.5}
-            maxValue={25}
-            stepValue={5}
+            maxValue={10}
+            stepValue={2}
             stepHeight={20}
             isAnimated={true}
             curved
@@ -245,7 +378,7 @@ export const FarmDetails = () => {
         </View>
 
         <View style={styles.graph}>
-          <Text style={styles.chartTitle}>Sodium, (ppm)</Text>
+          <Text style={styles.chartTitle}>Nitrogen, (ppm)</Text>
 
           <LineChart
             data={[
@@ -420,6 +553,65 @@ export const FarmDetails = () => {
             xAxisColor="#CDCDCD"
           />
         </View>
+
+        <View style={styles.graph}>
+          <Text style={styles.chartTitle}>Conductivity, (mS/cm)</Text>
+
+          <LineChart
+            data={[
+              {value: null, label: ''},
+              {value: 680, label: 'Mon'},
+              {value: 740, label: 'Tues'},
+              {value: 800, label: 'Wed'},
+              {value: 810, label: 'Thurs'},
+              {value: 820, label: 'Fri'},
+              {value: 800, label: 'Sat'},
+              {value: 790, label: 'Sun'},
+              {value: null, label: ''},
+            ]}
+            data2={[
+              {value: 800, label: ''},
+              {value: 800, label: 'Mon'},
+              {value: 800, label: 'Tues'},
+              {value: 800, label: 'Wed'},
+              {value: 800, label: 'Thurs'},
+              {value: 800, label: 'Fri'},
+              {value: 800, label: 'Sat'},
+              {value: 800, label: 'Sun'},
+              {value: 800, label: ''},
+            ]}
+            width={Dimensions.get('window').width - 80}
+            height={100}
+            yAxisThickness={0}
+            yAxisOffset={500}
+            color={'#749D29'}
+            thickness={3}
+            touchEnabled={true}
+            dataPointsRadius2={0}
+            color2="#57C4E5"
+            dragEnabled={true}
+            scaleEnabled={true}
+            scaleXEnabled={true}
+            scaleYEnabled={true}
+            pinchZoom={true}
+            rulesThickness={1}
+            rulesType="solid"
+            adjustToWidth
+            doubleTapToZoomEnabled={true}
+            dragDecelerationEnabled={true}
+            dragDecelerationFrictionCoef={0.99}
+            dataPointsColor={'#749D29'}
+            dataPointsRadius1={4.5}
+            maxValue={400}
+            stepValue={80}
+            stepHeight={20}
+            isAnimated={true}
+            curved
+            axisLabelFontSize={10}
+            xAxisLabelTextStyle={styles.axis}
+            xAxisColor="#CDCDCD"
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -504,6 +696,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 4,
   },
+  dataContainer: {
+    paddingHorizontal: 12,
+    marginTop: 24,
+  },
+  data: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
+    shadowOffset: {width: 0, height: 0},
+    shadowRadius: 12,
+    shadowOpacity: 1,
+    elevation: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    gap: 4,
+  },
+  dataTitle: {
+    fontWeight: '700',
+    fontSize: 14,
+    fontFamily: 'Figtree',
+    marginBottom: 4,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dataText: {
+    fontFamily: 'Helvetica',
+    alignItems: 'center',
+    fontSize: 12,
+  },
+  dataText1: {
+    fontFamily: 'Helvetica',
+    alignItems: 'center',
+    fontSize: 12,
+    paddingLeft: 40,
+  },
   tree: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -533,5 +763,8 @@ const styles = StyleSheet.create({
   axis: {
     fontSize: 11,
     fontFamily: 'Helvetica',
+  },
+  nutrients: {
+    flexDirection: 'row',
   },
 });

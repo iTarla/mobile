@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   Animated,
@@ -15,7 +15,7 @@ import NotificationsIcon from '../../assets/icons/Notifications.svg';
 import PersonIcon from '../../assets/icons/Person.svg';
 import ITarlaLogo from '../../assets/icons/iTarla.svg';
 import VectorIcon from '../../assets/icons/Vector.svg';
-import SunIcon from '../../assets/icons/Sun.svg';
+import SunIcon from '../../assets/icons/Current.svg';
 import GoodIcon from '../../assets/icons/Good.svg';
 import BadIcon from '../../assets/icons/Bad.svg';
 import NormalIcon from '../../assets/icons/Normal.svg';
@@ -23,7 +23,8 @@ import MapIcon from '../../assets/icons/Map.svg';
 import DegreeIcon from '../../assets/icons/Degree.svg';
 import WindIcon from '../../assets/icons/Wind.svg';
 import DropIcon from '../../assets/icons/Drop.svg';
-import SunnyIcon from '../../assets/icons/Sunny.svg';
+import RainyIcon from '../../assets/icons/Rainy.svg';
+import CloudIcon from '../../assets/icons/Cloud.svg';
 import CloudRainIcon from '../../assets/icons/CloudRain.svg';
 import Svg, {Defs, Ellipse, LinearGradient, Rect, Stop} from 'react-native-svg';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -114,6 +115,18 @@ const crops = [
 ];
 
 export const Home = () => {
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    fetch(
+      'https://api.weatherapi.com/v1/forecast.json?key=4979275275734b4087285021241511&q=Quba&days=1&aqi=no&alerts=yes',
+    )
+      .then(res => res.json())
+      .then(data => {
+        setWeather(data);
+      });
+  }, []);
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handlePress = index => {
@@ -211,22 +224,24 @@ export const Home = () => {
             <View style={styles.weatherContentContainer}>
               <View style={styles.leftColumn}>
                 <View style={styles.temperatureContainer}>
-                  <SunIcon />
+                  <SunIcon width={44} height={44} />
 
-                  <Text style={styles.temperature}>27</Text>
+                  <Text style={styles.temperature}>
+                    {weather ? weather.current.temp_c : 0}
+                  </Text>
 
                   <DegreeIcon />
                 </View>
 
                 <View style={styles.information}>
                   <View>
-                    <Text style={styles.date}>Tuesday, 23</Text>
+                    <Text style={styles.date}>Saturday, 16</Text>
                   </View>
 
                   <View style={styles.mapContainer}>
                     <MapIcon />
 
-                    <Text style={styles.date}>Baku, Azerbaijan</Text>
+                    <Text style={styles.date}>Quba, Azerbaijan</Text>
                   </View>
                 </View>
               </View>
@@ -235,13 +250,17 @@ export const Home = () => {
                 <View style={styles.mapContainer}>
                   <WindIcon />
 
-                  <Text style={styles.value}>9km/h</Text>
+                  <Text style={styles.value}>
+                    {weather ? weather.current.wind_kph : 0}km/h
+                  </Text>
                 </View>
 
                 <View style={styles.mapContainer}>
                   <DropIcon />
 
-                  <Text style={styles.value}>0.9</Text>
+                  <Text style={styles.value}>
+                    {weather ? weather.current.humidity : 0}%
+                  </Text>
                 </View>
 
                 <View style={styles.mapContainer}>
@@ -254,37 +273,37 @@ export const Home = () => {
 
             <View style={styles.hourlyContainer}>
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <CloudIcon />
 
                 <Text style={styles.time}>13:00</Text>
               </View>
 
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <RainyIcon />
 
                 <Text style={styles.time}>14:00</Text>
               </View>
 
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <RainyIcon />
 
                 <Text style={styles.time}>15:00</Text>
               </View>
 
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <CloudIcon />
 
                 <Text style={styles.time}>16:00</Text>
               </View>
 
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <RainyIcon />
 
                 <Text style={styles.time}>17:00</Text>
               </View>
 
               <View style={styles.hourlyWeather}>
-                <SunnyIcon />
+                <CloudIcon />
 
                 <Text style={styles.time}>18:00</Text>
               </View>
@@ -411,7 +430,10 @@ export const Home = () => {
                 <View style={styles.info}>
                   <Text>💧Humidity: {sort.humidity}%</Text>
 
-                  <Text>🌡️Temperature: {sort.temperature}{'\u00B0'}</Text>
+                  <Text>
+                    🌡️Temperature: {sort.temperature}
+                    {'\u00B0'}
+                  </Text>
 
                   <Text>🌱Nutrients: {sort.nutrients}/10</Text>
 
@@ -419,18 +441,34 @@ export const Home = () => {
                 </View>
 
                 <View style={styles.info}>
-                  {
-                    sort.humidity > 70 ? <GoodIcon /> : sort.humidity > 50 ? <NormalIcon /> : <BadIcon />
-                  }
-                  {
-                    sort.temperature > 25 ? <BadIcon /> : sort.temperature > 20 ? <NormalIcon /> : <GoodIcon />
-                  }
-                  {
-                    sort.nutrients >= 8 ? <GoodIcon /> : sort.nutrients > 5 ? <NormalIcon /> : <BadIcon />
-                  }
-                  {
-                    sort.powerConsumption > 15 ? <BadIcon /> : sort.powerConsumption > 8 ? <NormalIcon /> : <GoodIcon />
-                  }
+                  {sort.humidity > 70 ? (
+                    <GoodIcon />
+                  ) : sort.humidity > 50 ? (
+                    <NormalIcon />
+                  ) : (
+                    <BadIcon />
+                  )}
+                  {sort.temperature > 25 ? (
+                    <BadIcon />
+                  ) : sort.temperature > 20 ? (
+                    <NormalIcon />
+                  ) : (
+                    <GoodIcon />
+                  )}
+                  {sort.nutrients >= 8 ? (
+                    <GoodIcon />
+                  ) : sort.nutrients > 5 ? (
+                    <NormalIcon />
+                  ) : (
+                    <BadIcon />
+                  )}
+                  {sort.powerConsumption > 15 ? (
+                    <BadIcon />
+                  ) : sort.powerConsumption > 8 ? (
+                    <NormalIcon />
+                  ) : (
+                    <GoodIcon />
+                  )}
                 </View>
               </View>
             );
