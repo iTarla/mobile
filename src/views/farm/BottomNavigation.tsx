@@ -9,6 +9,7 @@ import HomeActiveIcon from '../../assets/icons/HomeActive.svg';
 import AutomationActiveIcon from '../../assets/icons/AutomationActive.svg';
 import FarmActiveIcon from '../../assets/icons/FarmActive.svg';
 import { Farm } from './Farm';
+import { FarmStack } from './FarmStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export const BottomNavigation = () => {
       
       <Tab.Screen options={{tabBarActiveTintColor: '#0A973A', tabBarIcon: ({focused }) => focused ? <AutomationActiveIcon width={24} height={24} /> : <AutomationIcon width={24} height={24} />, tabBarLabelStyle: styles.label }} name="Automation" component={Home} />
       
-      <Tab.Screen options={{tabBarActiveTintColor: '#0A973A', tabBarIcon: ({focused }) => focused ? <FarmActiveIcon width={24} height={24} /> : <FarmIcon width={24} height={24} />, tabBarLabelStyle: styles.label }} name="Farm" component={Farm} />
+      <Tab.Screen options={{tabBarActiveTintColor: '#0A973A', tabBarIcon: ({focused }) => focused ? <FarmActiveIcon width={24} height={24} /> : <FarmIcon width={24} height={24} />, tabBarLabelStyle: styles.label }} name="Farm" component={FarmStack} />
     </Tab.Navigator>
   );
 };
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     width: menuWidth,
     alignSelf: 'center',
     backgroundColor: 'white',
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,

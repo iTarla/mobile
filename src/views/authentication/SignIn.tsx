@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import {
   Dimensions,
+  Platform,
   Pressable,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   TextInput,
   View,
@@ -29,6 +31,8 @@ export const SignIn = () => {
 
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <StatusBar backgroundColor={'white'} />
+
       <View style={styles.iconContainer}>
         <WaveIcon fill={'green'} />
       </View>
@@ -129,6 +133,8 @@ const lineWidth = (Dimensions.get('window').width - 100) / 2;
 
 const logInButtonWidth = Dimensions.get('window').width - 60;
 
+const inputWidth = Dimensions.get('window').width - 132;
+
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
@@ -204,20 +210,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Helvetica',
     borderRadius: 14,
+    width: inputWidth,
   },
   inputContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 24,
-    paddingVertical: 18,
+    paddingVertical: Platform.OS == 'ios' ? 18 : 8,
     boxShadow: '0 0 1 1 rgba(0, 0, 0, 0.2)',
     borderRadius: 14,
   },
   focusedInputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 18,
+    paddingVertical: Platform.OS == 'ios' ? 18 : 8,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: '#0A973A',

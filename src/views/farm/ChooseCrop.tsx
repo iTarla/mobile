@@ -5,6 +5,7 @@ import {
   FlatList,
   LayoutAnimation,
   Pressable,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -89,7 +90,8 @@ export const ChooseCrop = () => {
     const toggleOpen = () => {
       setImageShown(value => !value);
 
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut
+      );
     };
 
     return (
@@ -147,6 +149,8 @@ export const ChooseCrop = () => {
 
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <StatusBar backgroundColor={'white'} />
+
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Choose your Crop</Text>
 
@@ -183,7 +187,7 @@ export const ChooseCrop = () => {
       </View>
 
       <Pressable onPress={Continue} style={styles.continueButton}>
-        <Text style={styles.continueText}>Continue</Text>
+        <Text style={styles.continueText}>Let's begin</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -196,6 +200,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     gap: 20,
+    paddingBottom: 20,
     paddingHorizontal: 20,
   },
   titleContainer: {

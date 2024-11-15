@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   LayoutAnimation,
+  StatusBar,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -87,6 +88,8 @@ export const ChooseFarm = () => {
 
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <StatusBar backgroundColor={'white'} />
+
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Choose your Farms</Text>
 
@@ -129,6 +132,7 @@ const styles = StyleSheet.create({
     gap: 20,
     backgroundColor: 'white',
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   titleContainer: {
     gap: 4,

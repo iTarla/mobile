@@ -20,10 +20,10 @@ export const App = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="BottomNavigation" component={BottomNavigation}/>
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="ChooseFarm" component={ChooseFarm} />
         <Stack.Screen name="ChooseCrop" component={ChooseCrop} />
+        <Stack.Screen name="BottomNavigation" component={BottomNavigation}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

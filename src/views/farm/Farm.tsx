@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   Pressable,
+  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -15,6 +16,7 @@ import ITarlaLogo from '../../assets/icons/iTarla.svg';
 import VectorIcon from '../../assets/icons/Vector.svg';
 import {ScrollView} from 'react-native-gesture-handler';
 import {LineChart} from 'react-native-gifted-charts';
+import {useNavigation} from '@react-navigation/native';
 
 export const Farm = () => {
   const [firstMetricFocus, setFirstMetricFocus] = useState(true);
@@ -22,8 +24,16 @@ export const Farm = () => {
   const [thirdMetricFocus, setThirdMetricFocus] = useState(false);
   const [fourthMetricFocus, setFourthMetricFocus] = useState(false);
 
+  const navigation = useNavigation();
+
+  const DetailedView = () => {
+    navigation.navigate('FarmDetails');
+  };
+
   return (
     <SafeAreaView style={styles.contentContainer}>
+      <StatusBar backgroundColor={'white'} />
+
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
           <View style={styles.logoContainer}>
@@ -124,7 +134,9 @@ export const Farm = () => {
         <View style={styles.measuresContainer}>
           <Text style={styles.left}>Key Metrics</Text>
 
-          <Text style={styles.right}>Detailed View</Text>
+          <Pressable onPress={DetailedView}>
+            <Text style={styles.right}>Detailed View</Text>
+          </Pressable>
         </View>
 
         <View style={styles.metrics}>
@@ -232,7 +244,8 @@ export const Farm = () => {
               {value: 4.2, label: 'Sun'},
               {value: null, label: ''},
             ]}
-            data2={[{value: 8, label: ''},
+            data2={[
+              {value: 8, label: ''},
               {value: 8, label: 'Mon'},
               {value: 8, label: 'Tues'},
               {value: 8, label: 'Wed'},
@@ -240,9 +253,10 @@ export const Farm = () => {
               {value: 8, label: 'Fri'},
               {value: 8, label: 'Sat'},
               {value: 8, label: 'Sun'},
-              {value: 8, label: ''},]}
+              {value: 8, label: ''},
+            ]}
             width={Dimensions.get('window').width - 140}
-            height={180}
+            height={100}
             yAxisThickness={0}
             color={'#57C4E5'}
             thickness={3}
@@ -264,7 +278,7 @@ export const Farm = () => {
             dataPointsRadius1={4.5}
             maxValue={10}
             stepValue={2}
-            stepHeight={35}
+            stepHeight={20}
             isAnimated={true}
             curved
             axisLabelFontSize={10}
@@ -349,7 +363,7 @@ const styles = StyleSheet.create({
   plantHealthContainer: {
     backgroundColor: '#F8FFF9',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
@@ -388,7 +402,7 @@ const styles = StyleSheet.create({
   waterContainer: {
     backgroundColor: '#F5FAFF',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
@@ -426,7 +440,7 @@ const styles = StyleSheet.create({
   soilHealthContainer: {
     backgroundColor: '#FFF9F9',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
@@ -465,7 +479,7 @@ const styles = StyleSheet.create({
   energyContainer: {
     backgroundColor: '#FFFDF2',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
@@ -510,7 +524,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: 'white',
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
@@ -582,7 +596,7 @@ const styles = StyleSheet.create({
   },
   metricContainer: {
     backgroundColor: 'white',
-    shadowColor: 'rgba(0, 0, 0, 0.16)',
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
     shadowOffset: {width: 0, height: 0},
     shadowRadius: 12,
     shadowOpacity: 1,
